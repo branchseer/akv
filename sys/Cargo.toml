@@ -1,0 +1,11 @@
+[package]
+name = "libarchive_sys"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libc = "0.2.137"
+
+[build-dependencies]
+vcpkg = "0.2.15"
+bindgen = "0.62.0"
