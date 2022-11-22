@@ -26,7 +26,4 @@ fn main() {
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .unwrap();
-    bindings
-        .write_to_file("/Users/patr0nus/bindings.rs")
-        .unwrap();
 }

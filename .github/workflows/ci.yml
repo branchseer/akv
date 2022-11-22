@@ -10,6 +10,7 @@ jobs:
   style_check:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> $GITHUB_ENV
       - run: vcpkg install libarchive
       - uses: actions-rs/toolchain@v1
         with:
@@ -28,6 +29,7 @@ jobs:
         ]
     runs-on: ${{ matrix.os }}
     steps:
+      - run: echo "VCPKG_ROOT=$VCPKG_INSTALLATION_ROOT" >> $GITHUB_ENV
       - run: vcpkg install libarchive
       - uses: actions/checkout@v3
       - run: cargo test --release
