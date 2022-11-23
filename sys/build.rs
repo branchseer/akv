@@ -4,6 +4,11 @@ use std::path::PathBuf;
 fn main() {
     let libarchive_package = vcpkg::Config::new().find_package("libarchive").unwrap();
 
+    if env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
+        println!("cargo:rustc-link-lib=User32");
+        println!("cargo:rustc-link-lib=Crypt32");
+    }
+
     println!("cargo:rerun-if-changed=wrapper.h");
     let mut bindgen_builder = bindgen::builder()
         .header("wrapper.h")

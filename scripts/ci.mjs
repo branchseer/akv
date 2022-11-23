@@ -7,7 +7,7 @@ cd(path.resolve(__dirname, '..'))
 const action = argv._[0]
 if (action === 'vcpkg') {
     if (process.platform === 'win32') {
-        await $`vcpkg install libarchive:x64-windows-static-md`
+        await $`vcpkg install libarchive:x64-windows-static`
     } else {
         await $`vcpkg install libarchive`
     }
@@ -16,9 +16,12 @@ if (action === 'vcpkg') {
     await $`cargo fmt --all -- --check`
     await $`cargo clippy --all-targets -- -D warnings`
 } else if (action === 'test') {
-    let cargo = 'cargo'
+    const cargo = ['cargo']
     if (process.platform === 'linux') {
-        cargo = 'cargo valgrind'
+        cargo.push('valgrind')
+    }
+    if (process.platform === 'windows') {
+        process.env.RUSTFLAGS="-Ctarget-feature=+crt-static"
     }
     await $`${cargo} test --release`
 } else {

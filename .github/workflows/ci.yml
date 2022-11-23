@@ -19,12 +19,12 @@ jobs:
       - run: ./scripts/ci.mjs style-check
   test:
     strategy:
+      fail-fast: false
       matrix:
         os: [
           macos-latest, ubuntu-latest, windows-latest
         ]
     runs-on: ${{ matrix.os }}
-    continue-on-error: true
     steps:
       - uses: dtolnay/rust-toolchain@beta
       - run: sudo apt-get install -y valgrind
