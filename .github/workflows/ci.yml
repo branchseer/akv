@@ -27,4 +27,4 @@ jobs:
       - uses: dtolnay/rust-toolchain@beta
       - run: npm install -g zx
       - uses: actions/checkout@v3
-      - run: ./scripts/ci.mjs test
+      - run: zx ./scripts/ci.mjs test
