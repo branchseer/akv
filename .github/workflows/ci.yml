@@ -15,7 +15,7 @@ jobs:
           components: clippy, rustfmt
       - run: npm install -g zx
       - uses: actions/checkout@v3
-      - run: npx zx ./scripts/ci.mjs style-check
+      - run: ./scripts/ci.mjs style-check
   test:
     strategy:
       matrix:

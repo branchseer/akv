@@ -11,6 +11,10 @@ libc = "0.2.137"
 always-assert = "0.1.2"
 derive_more = { version = "0.99.17", default-features = false, features = ["from"] }
 
+[package.metadata.vcpkg]
+git = "https://github.com/microsoft/vcpkg"
+tag = "2022.11.14"
+
 [workspace]
 members = [ "sys" ]
 
