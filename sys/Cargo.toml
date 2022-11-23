@@ -9,4 +9,7 @@ libc = "0.2.137"
 
 [build-dependencies]
 vcpkg = "0.2.15"
-bindgen = "0.62.0"
+bindgen = "0.63.0"
+
+[package.metadata.vcpkg]
+dependencies = ["libarchive"]
