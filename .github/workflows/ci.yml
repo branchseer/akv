@@ -15,6 +15,7 @@ jobs:
           components: clippy, rustfmt
       - run: npm install -g zx
       - uses: actions/checkout@v3
+      - run: ./scripts/vcpkg_install.mjs
       - run: ./scripts/ci.mjs style-check
   test:
     strategy:
@@ -23,6 +24,7 @@ jobs:
           macos-latest, ubuntu-latest, windows-latest
         ]
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     steps:
       - uses: dtolnay/rust-toolchain@beta
       - run: sudo apt-get install -y valgrind
@@ -31,4 +33,5 @@ jobs:
         if: runner.os == 'Linux'
       - run: npm install -g zx
       - uses: actions/checkout@v3
+      - run: zx ./scripts/vcpkg_install.mjs
       - run: zx ./scripts/ci.mjs test

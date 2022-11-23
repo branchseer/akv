@@ -1,9 +1,6 @@
 #!/usr/bin/env zx
 
-process.env.VCPKG_ROOT = process.env.VCPKG_INSTALLATION_ROOT
 cd(path.resolve(__dirname, '..'))
-
-await $`vcpkg install libarchive`
 
 const action = argv._[0]
 if (action === 'style-check') {
