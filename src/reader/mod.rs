@@ -18,7 +18,7 @@ use sys::{
     archive_read_support_format_lha, archive_read_support_format_mtree,
     archive_read_support_format_rar, archive_read_support_format_rar5,
     archive_read_support_format_tar, archive_read_support_format_warc,
-    archive_read_support_format_xar, archive_read_support_format_zip, ARCHIVE_EOF,
+    archive_read_support_format_zip, ARCHIVE_EOF,
 };
 
 use std::io;
@@ -44,7 +44,8 @@ pub struct ArchiveReader<'a>(Archive<'a>);
 impl<'a> ArchiveReader<'a> {
     fn prepare_archive_read() -> Archive<'a> {
         let archive_read = unsafe { Archive::new(archive_read_new()) };
-        // List copied from the following files, excluding those who use external program
+        // TODO: make the support list customizable
+        // List copied from the following files, excluding rarely used and those who use external program
         // - https://github.com/libarchive/libarchive/blob/fa4b613f2e2510bd036f2eeed2fece97cd18b079/libarchive/archive_read_support_format_all.c
         // - https://github.com/libarchive/libarchive/blob/fa4b613f2e2510bd036f2eeed2fece97cd18b079/libarchive/archive_read_support_filter_all.c
         // We don't call archive_read_support_*_all because we want to check each result and ensure it will not invoke external program (ARCHIVE_WARN)
@@ -56,7 +57,6 @@ impl<'a> ArchiveReader<'a> {
             archive_read_support_format_lha,
             archive_read_support_format_mtree,
             archive_read_support_format_tar,
-            archive_read_support_format_xar,
             archive_read_support_format_warc,
             archive_read_support_format_7zip,
             archive_read_support_format_cab,

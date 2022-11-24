@@ -7,9 +7,9 @@ cd(path.resolve(__dirname, '..'))
 const action = argv._[0]
 if (action === 'vcpkg') {
     if (process.platform === 'win32') {
-        await $`vcpkg install libarchive:x64-windows-static-md`
+        await $`vcpkg install --head --recurse libarchive:x64-windows-static-md`
     } else {
-        await $`vcpkg install libarchive`
+        await $`vcpkg install --head --recurse libarchive`
     }
     fs.writeFileSync(process.env.GITHUB_ENV, 'VCPKG_ROOT=' + process.env.VCPKG_INSTALLATION_ROOT)
 } else if (action === 'style-check') {
