@@ -16,8 +16,8 @@ vcpkg install libarchive
 ```rust
 use archive::reader::ArchiveReader;
 
-let reader = std::fs::File::open("tests/simple.zip")?;
-let mut archive_reader = ArchiveReader::with_reader(reader)?;
+let io_reader = std::fs::File::open("tests/simple.zip")?;
+let mut archive_reader = ArchiveReader::open_io(io_reader)?;
 
 while let Some(entry) = archive_reader.next_entry()? {
     println!("Entry name: {}", entry.pathname_utf8()?);

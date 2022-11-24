@@ -17,6 +17,12 @@ pub(crate) struct Archive<'a> {
 }
 unsafe impl<'a> Send for Archive<'a> {}
 
+#[derive(Eq, PartialEq, Debug)]
+pub(crate) enum SuccessResult {
+    Ok,
+    Warn,
+}
+
 impl<'a> Archive<'a> {
     unsafe fn new(ptr: *mut archive) -> Self {
         assert!(!ptr.is_null());
@@ -40,9 +46,10 @@ impl<'a> Archive<'a> {
             io::Error::new(io::ErrorKind::Other, err_string)
         }
     }
-    pub(crate) unsafe fn check_result(&self, num: c_int) -> io::Result<()> {
+    pub(crate) unsafe fn check_result(&self, num: c_int) -> io::Result<SuccessResult> {
         match num {
-            sys::ARCHIVE_OK | sys::ARCHIVE_WARN => Ok(()),
+            sys::ARCHIVE_OK => Ok(SuccessResult::Ok),
+            sys::ARCHIVE_WARN => Ok(SuccessResult::Warn),
             _ => Err(self.get_error()),
         }
     }

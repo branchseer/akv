@@ -5,10 +5,11 @@ static SIMPLE_ZIP: &[u8] = include_bytes!("simple.zip");
 static NESTED_ZIP: &[u8] = include_bytes!("nested.zip");
 
 fn test_simple_zip_content(_simple_zip_content: impl Read + Seek + Send, skip_read_first: bool) {
-    let mut archive_reader = ArchiveReader::with_reader(Cursor::new(SIMPLE_ZIP)).unwrap();
+    let mut archive_reader = ArchiveReader::open_io(Cursor::new(SIMPLE_ZIP)).unwrap();
 
     let first_entry = archive_reader.next_entry().unwrap().unwrap();
     assert_eq!(first_entry.pathname_utf8().unwrap(), "a");
+    assert_eq!(first_entry.pathname_mb().unwrap().to_bytes(), b"a");
     if !skip_read_first {
         assert_eq!(read_to_string(first_entry.into_reader()).unwrap(), "foo");
     }
@@ -32,7 +33,7 @@ fn test_skip_entry() {
 
 #[test]
 fn test_nested() {
-    let mut archive_reader = ArchiveReader::with_reader(Cursor::new(NESTED_ZIP)).unwrap();
+    let mut archive_reader = ArchiveReader::open_io(Cursor::new(NESTED_ZIP)).unwrap();
     let simple_zip_entry = archive_reader.next_entry().unwrap().unwrap();
     assert_eq!(simple_zip_entry.pathname_utf8().unwrap(), "simple.zip");
     test_simple_zip_content(simple_zip_entry.into_reader(), false);

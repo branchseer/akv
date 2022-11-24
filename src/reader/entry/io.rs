@@ -1,5 +1,5 @@
-use super::seek_conv::FFISeekFrom;
-use crate::reader::Entry;
+use crate::reader::entry::Entry;
+use crate::reader::seek_conv::FFISeekFrom;
 use derive_more::From;
 use std::io;
 use std::io::SeekFrom;
