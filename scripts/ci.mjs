@@ -7,7 +7,7 @@ cd(path.resolve(__dirname, '..'))
 const action = argv._[0]
 if (action === 'vcpkg') {
     if (process.platform === 'win32') {
-        await $`vcpkg install libarchive:x64-windows-static`
+        await $`vcpkg install libarchive:x64-windows-static-md`
     } else {
         await $`vcpkg install libarchive`
     }
