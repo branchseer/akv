@@ -5,14 +5,7 @@ import fs from 'node:fs'
 cd(path.resolve(__dirname, '..'))
 
 const action = argv._[0]
-if (action === 'vcpkg') {
-    if (process.platform === 'win32') {
-        await $`vcpkg install --head --recurse libarchive:x64-windows-static-md`
-    } else {
-        await $`vcpkg install --head --recurse libarchive`
-    }
-    fs.writeFileSync(process.env.GITHUB_ENV, 'VCPKG_ROOT=' + process.env.VCPKG_INSTALLATION_ROOT)
-} else if (action === 'style-check') {
+if (action === 'style-check') {
     await $`cargo fmt --all -- --check`
     await $`cargo clippy --all-targets -- -D warnings`
 } else if (action === 'test') {
