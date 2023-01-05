@@ -32,4 +32,6 @@ jobs:
         if: runner.os == 'Linux'
       - run: npm install -g zx
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - run: zx ./scripts/ci.mjs test
