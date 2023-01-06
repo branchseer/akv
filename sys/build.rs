@@ -1,9 +1,17 @@
 use std::env;
 use std::path::PathBuf;
 
+fn lib_filename(lib_name: &str) -> String {
+    if env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
+        format!("{lib_name}.lib")
+    } else {
+        format!("lib{lib_name}.a")
+    }
+}
+
 fn main() {
-    let cmake_out = cmake::Config::new("libarchive")
-        .build_target("archive_static")
+    let mut cmake_config = cmake::Config::new("libarchive");
+    cmake_config.build_target("archive_static")
         .define("ENABLE_BZip2", "ON")
         .define("CMAKE_REQUIRE_FIND_PACKAGE_BZip2", "TRUE")
         .define("ENABLE_LIBXML2", "ON")
@@ -24,8 +32,17 @@ fn main() {
         .define("ENABLE_EXPAT", "OFF")
         .define("ENABLE_LIBGCC", "OFF")
         .define("ENABLE_LIBB2", "OFF")
-        .define("ENABLE_TEST", "OFF")
-        .build();
+        .define("ENABLE_TEST", "OFF");
+
+    cmake_config
+        .define("ZSTD_INCLUDE_DIR", env::var("DEP_ZSTD_INCLUDE").unwrap())
+        .define("ZSTD_LIBRARY", PathBuf::from(env::var("DEP_ZSTD_ROOT").unwrap()).join(lib_filename("zstd")));
+
+    cmake_config
+        .define("BZIP2_INCLUDE_DIR", env::var("DEP_BZIP2_INCLUDE").unwrap())
+        .define("BZIP2_LIBRARIES", PathBuf::from(env::var("DEP_BZIP2_ROOT").unwrap()).join("lib").join(lib_filename("bz2")));
+
+    let cmake_out = cmake_config.build();
     println!("cargo:rustc-link-search=native={}", cmake_out.join("build").join("libarchive").display());
     println!("cargo:rustc-link-lib=static=archive");
 
