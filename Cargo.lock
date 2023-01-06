@@ -156,6 +156,7 @@ dependencies = [
  "libz-sys",
  "lz4-sys",
  "lzma-sys",
+ "openssl-src",
  "zstd-sys",
 ]
 
@@ -244,6 +245,15 @@ name = "once_cell"
 version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "86f0b0d4bf799edbc74508c1e8bf170ff5f41238e5f8225603ca7caaae2b7860"
+
+[[package]]
+name = "openssl-src"
+version = "300.0.11+3.0.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "181e2429088818099075f6ccf30e6d096a513c46e7e0b946a4dde055c35cb17a"
+dependencies = [
+ "cc",
+]
 
 [[package]]
 name = "peeking_take_while"
