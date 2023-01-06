@@ -20,8 +20,6 @@ fn main() {
         .define("CMAKE_REQUIRE_FIND_PACKAGE_lz4", "TRUE")
         .define("ENABLE_LZMA", "ON")
         .define("CMAKE_REQUIRE_FIND_PACKAGE_LibLZMA", "TRUE")
-        .define("ENABLE_OPENSSL", "ON")
-        .define("CMAKE_REQUIRE_FIND_PACKAGE_OpenSSL", "TRUE")
         .define("ENABLE_ZLIB", "ON")
         .define("CMAKE_REQUIRE_FIND_PACKAGE_zlib", "TRUE")
         .define("ENABLE_ZSTD", "ON")
@@ -34,6 +32,15 @@ fn main() {
         .define("ENABLE_LIBB2", "OFF")
         .define("ENABLE_TEST", "OFF");
 
+    if env::var("DEP_OPENSSL_VERSION").is_ok() {
+        cmake_config
+            .define("ENABLE_OPENSSL", "ON")
+            .define("CMAKE_REQUIRE_FIND_PACKAGE_OpenSSL", "TRUE")
+            .define("OPENSSL_ROOT_DIR", env::var("DEP_OPENSSL_ROOT").unwrap())
+    } else {
+        cmake_config.define("ENABLE_OPENSSL", "OFF")
+    }
+
     cmake_config
         .define("ZSTD_INCLUDE_DIR", env::var("DEP_ZSTD_INCLUDE").unwrap())
         .define("ZSTD_LIBRARY", PathBuf::from(env::var("DEP_ZSTD_ROOT").unwrap()).join(lib_filename("zstd")));
@@ -41,6 +48,7 @@ fn main() {
     cmake_config
         .define("BZIP2_INCLUDE_DIR", env::var("DEP_BZIP2_INCLUDE").unwrap())
         .define("BZIP2_LIBRARIES", PathBuf::from(env::var("DEP_BZIP2_ROOT").unwrap()).join("lib").join(lib_filename("bz2")));
+
 
     let cmake_out = cmake_config.build();
     println!("cargo:rustc-link-search=native={}", cmake_out.join("build").join("libarchive").display());
