@@ -13,9 +13,9 @@ if (action === 'style-check') {
     if (process.platform === 'linux') {
         cargo.push('valgrind')
     }
-    if (process.platform === 'windows') {
+    if (process.platform === 'win32') {
         process.env.RUSTFLAGS="-Ctarget-feature=+crt-static"
-        process.env.OPENSSL_SRC_PERL = "C:/Strawberry/perl/bin/perl"
+        process.env.OPENSSL_SRC_PERL = "C:/Strawberry/perl/bin/perl.exe"
         console.log(fs.statSync(process.env.OPENSSL_SRC_PERL))
     }
     await $`${cargo} test --release`
