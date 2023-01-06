@@ -15,6 +15,8 @@ if (action === 'style-check') {
     }
     if (process.platform === 'windows') {
         process.env.RUSTFLAGS="-Ctarget-feature=+crt-static"
+        process.env.OPENSSL_SRC_PERL = "C:/Strawberry/perl/bin/perl"
+        console.log(fs.statSync(process.env.OPENSSL_SRC_PERL))
     }
     await $`${cargo} test --release`
 } else {
