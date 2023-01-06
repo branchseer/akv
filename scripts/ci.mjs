@@ -16,9 +16,9 @@ if (action === 'style-check') {
     if (process.platform === 'win32') {
         process.env.RUSTFLAGS="-Ctarget-feature=+crt-static"
         process.env.OPENSSL_SRC_PERL = "C:/Strawberry/perl/bin/perl.exe"
-        console.log(fs.statSync(process.env.OPENSSL_SRC_PERL))
+        console.log(fs.statSync(process.env.OPENSSL_SRC_PERL)) // Ensure perl exists
     }
-    await $`${cargo} test --release`
+    await $`${cargo} test --release -vv`
 } else {
     console.error('Unrecognized action: ', action)
     process.exit(1)
