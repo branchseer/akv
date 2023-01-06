@@ -5,5 +5,6 @@ pub use lzma_sys;
 pub use bzip2_sys;
 pub use libz_sys;
 pub use zstd_sys;
+pub use lz4_sys;
 
 include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
