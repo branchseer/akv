@@ -11,7 +11,8 @@ fn lib_filename(lib_name: &str) -> String {
 
 fn main() {
     let mut cmake_config = cmake::Config::new("libarchive");
-    cmake_config.build_target("archive_static")
+    cmake_config
+        .build_target("archive_static")
         .define("ENABLE_BZip2", "ON")
         .define("CMAKE_REQUIRE_FIND_PACKAGE_BZip2", "TRUE")
         .define("ENABLE_LIBXML2", "ON")
@@ -36,22 +37,32 @@ fn main() {
         cmake_config
             .define("ENABLE_OPENSSL", "ON")
             .define("CMAKE_REQUIRE_FIND_PACKAGE_OpenSSL", "TRUE")
-            .define("OPENSSL_ROOT_DIR", env::var("DEP_OPENSSL_ROOT").unwrap())
+            .define("OPENSSL_ROOT_DIR", env::var("DEP_OPENSSL_ROOT").unwrap());
     } else {
-        cmake_config.define("ENABLE_OPENSSL", "OFF")
+        cmake_config.define("ENABLE_OPENSSL", "OFF");
     }
 
     cmake_config
         .define("ZSTD_INCLUDE_DIR", env::var("DEP_ZSTD_INCLUDE").unwrap())
-        .define("ZSTD_LIBRARY", PathBuf::from(env::var("DEP_ZSTD_ROOT").unwrap()).join(lib_filename("zstd")));
+        .define(
+            "ZSTD_LIBRARY",
+            PathBuf::from(env::var("DEP_ZSTD_ROOT").unwrap()).join(lib_filename("zstd")),
+        );
 
     cmake_config
         .define("BZIP2_INCLUDE_DIR", env::var("DEP_BZIP2_INCLUDE").unwrap())
-        .define("BZIP2_LIBRARIES", PathBuf::from(env::var("DEP_BZIP2_ROOT").unwrap()).join("lib").join(lib_filename("bz2")));
-
+        .define(
+            "BZIP2_LIBRARIES",
+            PathBuf::from(env::var("DEP_BZIP2_ROOT").unwrap())
+                .join("lib")
+                .join(lib_filename("bz2")),
+        );
 
     let cmake_out = cmake_config.build();
-    println!("cargo:rustc-link-search=native={}", cmake_out.join("build").join("libarchive").display());
+    println!(
+        "cargo:rustc-link-search=native={}",
+        cmake_out.join("build").join("libarchive").display()
+    );
     println!("cargo:rustc-link-lib=static=archive");
 
     if env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
@@ -60,7 +71,7 @@ fn main() {
     }
 
     println!("cargo:rerun-if-changed=wrapper.h");
-    let mut bindgen_builder = bindgen::builder()
+    let bindgen_builder = bindgen::builder()
         .header("wrapper.h")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .allowlist_function("archive_.*")
@@ -69,7 +80,10 @@ fn main() {
         .blocklist_type("timespec")
         .blocklist_type("stat")
         .default_macro_constant_type(bindgen::MacroTypeVariation::Signed)
-        .clang_args(["-I", &(env::var("CARGO_MANIFEST_DIR").unwrap() + "/libarchive/libarchive")])
+        .clang_args([
+            "-I",
+            &(env::var("CARGO_MANIFEST_DIR").unwrap() + "/libarchive/libarchive"),
+        ])
         .raw_line("use libc::{stat, FILE};");
 
     let bindings = bindgen_builder.generate().unwrap();
