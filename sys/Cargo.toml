@@ -16,7 +16,7 @@ lz4-sys = "1.9.4"
 # libarchive on Apple Platforms doesn't use openssl:
 # https://github.com/libarchive/libarchive/blob/v3.6.2/CMakeLists.txt#L809
 # https://github.com/libarchive/libarchive/blob/v3.6.2/libarchive/archive_hmac_private.h#L46
-[target.'cfg(not(target_vendor="apple"))'.dependencies]
+[target.'cfg(not(target_vendor = "apple"))'.dependencies]
 openssl-sys = { version = "0.9.80", features = ["vendored"] }
 
 [build-dependencies]
