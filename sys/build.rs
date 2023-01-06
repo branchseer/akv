@@ -9,6 +9,24 @@ fn lib_filename(lib_name: &str) -> String {
     }
 }
 
+fn lib_path<'a>(
+    prefix_env_name: &'a str,
+    path_components: impl IntoIterator<Item = &'a str>,
+    lib_name: &'a str,
+) -> String {
+    use path_slash::PathBufExt as _;
+
+    let mut path = PathBuf::from(env::var(prefix_env_name).unwrap());
+    for component in path_components {
+        path.push(component);
+    }
+    path.push(lib_filename(lib_name));
+
+    path.to_slash() // libarchive's CMakeList.txt doesn't like "\" in Windows paths
+        .unwrap()
+        .into_owned()
+}
+
 fn main() {
     let mut cmake_config = cmake::Config::new("libarchive");
     cmake_config
@@ -36,27 +54,18 @@ fn main() {
         .define("ENABLE_LZMA", "ON")
         .define("CMAKE_REQUIRE_FIND_PACKAGE_LibLZMA", "TRUE")
         .define("LIBLZMA_INCLUDE_DIR", env::var("DEP_LZMA_INCLUDE").unwrap())
-        .define(
-            "LIBLZMA_LIBRARY",
-            PathBuf::from(env::var("DEP_LZMA_ROOT").unwrap()).join(lib_filename("lzma")),
-        );
+        .define("LIBLZMA_LIBRARY", lib_path("DEP_LZMA_ROOT", [], "lzma"));
 
     cmake_config
         .define("ENABLE_LZ4", "ON")
         .define("CMAKE_REQUIRE_FIND_PACKAGE_lz4", "TRUE")
         .define("LZ4_INCLUDE_DIR", env::var("DEP_LZ4_INCLUDE").unwrap())
-        .define(
-            "LZ4_LIBRARY",
-            PathBuf::from(env::var("DEP_LZ4_ROOT").unwrap()).join(lib_filename("lz4")),
-        );
+        .define("LZ4_LIBRARY", lib_path("DEP_LZ4_ROOT", [], "lz4"));
 
     cmake_config
         .define("ENABLE_ZSTD", "ON")
         .define("ZSTD_INCLUDE_DIR", env::var("DEP_ZSTD_INCLUDE").unwrap())
-        .define(
-            "ZSTD_LIBRARY",
-            PathBuf::from(env::var("DEP_ZSTD_ROOT").unwrap()).join(lib_filename("zstd")),
-        );
+        .define("ZSTD_LIBRARY", lib_path("DEP_ZSTD_ROOT", [], "zstd"));
 
     cmake_config
         .define("ENABLE_BZip2", "ON")
@@ -64,21 +73,14 @@ fn main() {
         .define("BZIP2_INCLUDE_DIR", env::var("DEP_BZIP2_INCLUDE").unwrap())
         .define(
             "BZIP2_LIBRARIES",
-            PathBuf::from(env::var("DEP_BZIP2_ROOT").unwrap())
-                .join("lib")
-                .join(lib_filename("bz2")),
+            lib_path("DEP_BZIP2_ROOT", ["lib"], "bz2"),
         );
 
     cmake_config
         .define("ENABLE_ZLIB", "ON")
         .define("CMAKE_REQUIRE_FIND_PACKAGE_zlib", "TRUE")
         .define("ZLIB_INCLUDE_DIR", env::var("DEP_Z_INCLUDE").unwrap())
-        .define(
-            "ZLIB_LIBRARY",
-            PathBuf::from(env::var("DEP_Z_ROOT").unwrap())
-                .join("lib")
-                .join(lib_filename("z")),
-        );
+        .define("ZLIB_LIBRARY", lib_path("DEP_Z_ROOT", ["lib"], "z"));
 
     let cmake_out = cmake_config.build();
     println!(

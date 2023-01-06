@@ -22,3 +22,4 @@ openssl-sys = { version = "0.9.80", features = ["vendored"] }
 [build-dependencies]
 bindgen = "0.63.0"
 cmake = "0.1.49"
+path-slash = "0.2.1"
