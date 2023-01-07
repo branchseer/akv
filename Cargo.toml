@@ -4,9 +4,12 @@ version = "0.1.0"
 edition = "2021"
 rust-version = "1.65"
 license = "MIT OR Apache-2.0"
+description = "Safe bindings for libarchive with minimum overhead"
+homepage = "https://github.com/patr0nus/akv"
+repository = "https://github.com/patr0nus/akv"
 
 [dependencies]
-libarchive_src = { path = "libarchive_src" }
+libarchive_src = { version = "0.1", path = "libarchive_src" }
 libc = "0.2.137"
 always-assert = "0.1.2"
 
