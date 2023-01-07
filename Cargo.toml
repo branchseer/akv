@@ -6,12 +6,12 @@ rust-version = "1.65"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-sys = { path = "./sys", package = "libarchive_sys" }
+libarchive_src = { path = "libarchive_src" }
 libc = "0.2.137"
 always-assert = "0.1.2"
 
 [workspace]
-members = [ "sys" ]
+members = ["libarchive_src"]
 
 [profile.release]
 panic = "abort"

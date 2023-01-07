@@ -3,7 +3,7 @@ use crate::error;
 use std::io;
 use std::io::SeekFrom;
 use std::os::raw::{c_int, c_void};
-use sys::{
+use libarchive_src::{
     archive, archive_close_callback, archive_read_callback, archive_seek_callback, la_int64_t,
     la_ssize_t, ARCHIVE_OK,
 };

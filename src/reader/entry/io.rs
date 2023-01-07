@@ -2,7 +2,7 @@ use crate::reader::entry::Entry;
 use crate::reader::seek_conv::FFISeekFrom;
 use std::io;
 use std::io::SeekFrom;
-use sys::{archive_read_data, archive_seek_data};
+use libarchive_src::{archive_read_data, archive_seek_data};
 
 #[derive(Debug)]
 pub struct EntryReader<'entry, 'archive: 'entry>(Entry<'entry, 'archive>);

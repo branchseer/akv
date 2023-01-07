@@ -1,6 +1,6 @@
 use std::ffi::{CStr, CString};
 use std::{io, os::raw::c_int};
-use sys::{
+use libarchive_src::{
     archive, archive_errno, archive_error_string, archive_set_error, ARCHIVE_OK, ARCHIVE_WARN,
 };
 
@@ -32,7 +32,7 @@ macro_rules! check_io_result {
             ::std::io::Result::Ok(ok) => ok,
             ::std::io::Result::Err(err) => {
                 $crate::error::set_archive_error($archive_ptr, &err);
-                return ::sys::ARCHIVE_FATAL as _;
+                return ::libarchive_src::ARCHIVE_FATAL as _;
             }
         }
     };

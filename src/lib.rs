@@ -4,7 +4,7 @@ use std::ffi::CStr;
 use std::io;
 use std::marker::PhantomData;
 use std::ptr::null_mut;
-use sys::{archive, archive_errno, archive_error_string, archive_free};
+use libarchive_src::{archive, archive_errno, archive_error_string, archive_free};
 
 mod error;
 pub mod reader;
@@ -48,8 +48,8 @@ impl<'a> Archive<'a> {
     }
     pub(crate) unsafe fn check_result(&self, num: c_int) -> io::Result<SuccessResult> {
         match num {
-            sys::ARCHIVE_OK => Ok(SuccessResult::Ok),
-            sys::ARCHIVE_WARN => Ok(SuccessResult::Warn),
+            libarchive_src::ARCHIVE_OK => Ok(SuccessResult::Ok),
+            libarchive_src::ARCHIVE_WARN => Ok(SuccessResult::Warn),
             _ => Err(self.get_error()),
         }
     }

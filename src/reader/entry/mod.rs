@@ -5,7 +5,7 @@ use io::EntryReader;
 use std::ffi::CStr;
 use std::io as io_;
 use std::marker::PhantomData;
-use sys::{archive_entry, archive_entry_pathname, archive_entry_pathname_utf8};
+use libarchive_src::{archive_entry, archive_entry_pathname, archive_entry_pathname_utf8};
 
 #[derive(Debug)]
 pub struct Entry<'entry, 'archive: 'entry> {
