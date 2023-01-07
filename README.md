@@ -1,20 +1,11 @@
-# archive
+# akv
 
 > Safe bindings for [libarchive](https://www.libarchive.org/) with minimum overhead
 
-# Usage
-
-`libarchive` needs to be installed via [vcpkg](https://vcpkg.io/) at build time:
-```sh
-vcpkg install libarchive
-```
-
-`libarchive` is statically linked so there is no runtime dependency.
-
-## Example
+# Example
 
 ```rust
-use archive::reader::ArchiveReader;
+use akv::reader::ArchiveReader;
 
 let io_reader = std::fs::File::open("tests/simple.zip")?;
 let mut archive_reader = ArchiveReader::open_io(io_reader)?;

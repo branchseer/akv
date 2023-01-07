@@ -3,13 +3,7 @@
 version = 3
 
 [[package]]
-name = "always-assert"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fbf688625d06217d5b1bb0ea9d9c44a1635fd0ee3534466388d18203174f4d11"
-
-[[package]]
-name = "archive"
+name = "akv"
 version = "0.1.0"
 dependencies = [
  "always-assert",
@@ -17,6 +11,12 @@ dependencies = [
  "libarchive_sys",
  "libc",
 ]
+
+[[package]]
+name = "always-assert"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fbf688625d06217d5b1bb0ea9d9c44a1635fd0ee3534466388d18203174f4d11"
 
 [[package]]
 name = "autocfg"

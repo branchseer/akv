@@ -1,4 +1,4 @@
-use archive::reader::ArchiveReader;
+use akv::reader::ArchiveReader;
 use std::io::{read_to_string, Cursor, Read, Seek};
 
 static SIMPLE_ZIP: &[u8] = include_bytes!("simple.zip");
