@@ -1,10 +1,10 @@
 use crate::error::check_result;
+use libarchive_src::{archive, archive_errno, archive_error_string, archive_free};
 use libc::c_int;
 use std::ffi::CStr;
 use std::io;
 use std::marker::PhantomData;
 use std::ptr::null_mut;
-use libarchive_src::{archive, archive_errno, archive_error_string, archive_free};
 
 mod error;
 pub mod reader;

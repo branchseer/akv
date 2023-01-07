@@ -1,7 +1,7 @@
+use libarchive_src::la_int64_t;
 use std::io;
 use std::io::SeekFrom;
 use std::os::raw::c_int;
-use libarchive_src::la_int64_t;
 
 pub struct FFISeekFrom {
     pub offset: la_int64_t,

@@ -1,8 +1,8 @@
-use std::ffi::{CStr, CString};
-use std::{io, os::raw::c_int};
 use libarchive_src::{
     archive, archive_errno, archive_error_string, archive_set_error, ARCHIVE_OK, ARCHIVE_WARN,
 };
+use std::ffi::{CStr, CString};
+use std::{io, os::raw::c_int};
 
 pub(crate) unsafe fn check_result(num: c_int, archive_ptr: *mut archive) -> io::Result<()> {
     match num {

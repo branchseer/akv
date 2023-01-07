@@ -2,10 +2,10 @@ mod io;
 
 use crate::Archive;
 use io::EntryReader;
+use libarchive_src::{archive_entry, archive_entry_pathname, archive_entry_pathname_utf8};
 use std::ffi::CStr;
 use std::io as io_;
 use std::marker::PhantomData;
-use libarchive_src::{archive_entry, archive_entry_pathname, archive_entry_pathname_utf8};
 
 #[derive(Debug)]
 pub struct Entry<'entry, 'archive: 'entry> {
