@@ -82,12 +82,23 @@ fn main() {
         .define("ZLIB_INCLUDE_DIR", env::var("DEP_Z_INCLUDE").unwrap())
         .define("ZLIB_LIBRARY", lib_path("DEP_Z_ROOT", ["lib"], "z"));
 
+    if env::var("CARGO_CFG_TARGET_ENV").unwrap() == "msvc" {
+        cmake_config.generator("Ninja");
+    }
+
     let cmake_out = cmake_config.build();
     println!(
         "cargo:rustc-link-search=native={}",
         cmake_out.join("build").join("libarchive").display()
     );
-    println!("cargo:rustc-link-lib=static=archive");
+    println!(
+        "cargo:rustc-link-lib=static={}",
+        if env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
+            "archive_static"
+        } else {
+            "archive"
+        }
+    );
 
     if env::var("CARGO_CFG_TARGET_OS").unwrap() == "windows" {
         println!("cargo:rustc-link-lib=User32");
