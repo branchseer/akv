@@ -1,12 +1,17 @@
 use crate::reader::entry::Entry;
 use crate::reader::seek_conv::FFISeekFrom;
-use derive_more::From;
 use std::io;
 use std::io::SeekFrom;
 use sys::{archive_read_data, archive_seek_data};
 
-#[derive(Debug, From)]
+#[derive(Debug)]
 pub struct EntryReader<'entry, 'archive: 'entry>(Entry<'entry, 'archive>);
+
+impl<'entry, 'archive: 'entry> From<Entry<'entry, 'archive>> for EntryReader<'entry, 'archive> {
+    fn from(value: Entry<'entry, 'archive>) -> Self {
+        EntryReader(value)
+    }
+}
 
 impl<'entry, 'archive: 'entry> EntryReader<'entry, 'archive> {
     pub fn entry(&self) -> &Entry<'entry, 'archive> {

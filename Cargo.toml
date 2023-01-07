@@ -9,7 +9,6 @@ license = "MIT OR Apache-2.0"
 sys = { path = "./sys", package = "libarchive_sys" }
 libc = "0.2.137"
 always-assert = "0.1.2"
-derive_more = { version = "0.99.17", default-features = false, features = ["from"] }
 
 [workspace]
 members = [ "sys" ]
