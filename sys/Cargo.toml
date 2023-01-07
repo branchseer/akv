@@ -3,6 +3,9 @@ name = "libarchive_sys"
 version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
+description = "Source and raw bindings of libarchive. High level bindings are available in crate `akv`."
+homepage = "https://github.com/patr0nus/akv"
+repository = "https://github.com/patr0nus/akv"
 
 [dependencies]
 libc = "0.2.137"
